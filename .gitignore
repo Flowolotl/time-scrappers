@@ -5,6 +5,3 @@
 /*.rbxlx.lock
 /*.rbxl.lock
 api_key.txt
-
-.github/workflows/deploy_game_staging.yaml
-.github/workflows/deploy_lobby_staging.yaml
