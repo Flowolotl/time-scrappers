@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+      - game-prod
+      - game-staging
+      - lobby-staging
+      - lobby-prod
     pull_request:
       branches:
         - main
