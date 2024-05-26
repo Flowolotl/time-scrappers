@@ -7,6 +7,10 @@ on:
     pull_request:
       branches:
         - main
+        - game-prod
+        - game-staging
+        - lobby-staging
+        - lobby-prod
 
 jobs:
 
