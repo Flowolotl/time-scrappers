@@ -22,4 +22,4 @@ jobs:
 
     - run: rojo build -o time-scrappers-game-s.rbxlx
 
-    - run: rbxcloud experience publish -f time-scrappers-game-s.rbxlx -p 17627889157 -u 6036715160 -t published -a ${{ secrets.RBXCLOUD_API_KEY }} # stage game
+    - run: rbxcloud experience publish -f time-scrappers-game-s.rbxlx -p 17628632421-u 6036715160 -t published -a ${{ secrets.RBXCLOUD_API_KEY }} # stage game
