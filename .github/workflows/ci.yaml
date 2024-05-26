@@ -21,7 +21,7 @@ jobs:
     - uses: Roblox/setup-foreman@v1
       name: Install Foreman
       with:
-        version: latest
+        version: "^1.0.0"
         token: ${{ secrets.GITHUB_TOKEN }}
       
 
