@@ -1,9 +1,9 @@
-name: Deploy
+name: Deploy Lobby Staging
 
 on:
   push:
     branches:
-      - main
+      - lobby-staging
 
 jobs:
 
