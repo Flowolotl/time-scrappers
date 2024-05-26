@@ -1,5 +1,9 @@
 {
   "name": "time-scrappers",
+  "servePort": 32874,
+  "servePlaceIds": [
+    17628634623 
+  ],
   "tree": {
     "$className": "DataModel",
 
