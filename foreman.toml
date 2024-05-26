@@ -1,4 +1,4 @@
-# aftman to foreman
+# used for github actions because i don't know how to use aftman in actions
 
 [tools]
 rojo = { github = "rojo-rbx/rojo", version = "7.4.1" }
