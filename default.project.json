@@ -1,8 +1,5 @@
 {
   "name": "time-scrappers",
-  "servePlaceIds": [
-     0
-  ],
   "tree": {
     "$className": "DataModel",
 
