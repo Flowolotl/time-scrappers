@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - uses: Roblox/setup-foreman@v1
+      name: Install Foreman
+      with:
+        version: "^1.0.0"
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - run: rojo build -o time-scrappers.rbxlx
+
+    - run: rbxcloud experience publish -f time-scrappers.rbxlx -p 17627889157 -u 6036715160 -t published -a ${{ secrets.RBXCLOUD_API_KEY }}

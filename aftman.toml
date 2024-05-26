@@ -6,3 +6,4 @@
 rojo = "rojo-rbx/rojo@7.4.1"
 selene = "Kampfkarren/selene@0.27.1"
 stylua = "JohnnyMorganz/StyLua@0.20.0"
+rbxcloud = "Sleitnick/rbxcloud@0.10.0" # GameID: 6036715160 ___ LobbyPlaceID: 17627889157 ___ GamePlaceID: _
