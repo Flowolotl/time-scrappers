@@ -1,3 +1,3 @@
 print("Hello world, from server!")
 
-print("Hello this is the coder reporting from the game stage branch!")
+print("Hello this coder reporting from the game staging branch!")
