@@ -6,19 +6,34 @@
     "ReplicatedStorage": {
       "Packages": {
         "$path": "Packages"
+      },
+      "Shared": {
+        "$path": "src/shared"
       }
     },
 
     "ServerScriptService": {
-      "Server": {
-        "$path": "src/server"
+      "Game": {
+        "$className": "Folder",
+        "Modules": {
+          "$className": "Folder"
+        },
+        "ServerRuntime": {
+          "$path": "src/server/game/server_runtime"
+        }
       }
     },
 
     "StarterPlayer": {
-      "StarterPlayerScripts": {
-        "Client": {
-          "$path": "src/client"
+      "StarterPlayerScripts": { 
+        "Game": {
+          "$className": "Folder",
+          "Modules": {
+            "$className": "Folder"
+          },
+          "ClientRuntime": {
+            "$path": "src/client/game/client_runtime"
+          }
         }
       }
     },
