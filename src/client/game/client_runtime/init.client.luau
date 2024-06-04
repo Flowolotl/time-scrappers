@@ -15,22 +15,20 @@ handle.Parent = PlayerGui
 
 print("Hello world, from client!")
 
-local function Corner()
-	return React.createElement("UICorner", {
-		CornerRadius = UDim.new(0, 30),
-	})
-end
+local Corner = require(Find.path(script.Parent, "Components/Corner"))
 
 local function Component(props)
 	local text, setText = React.useState(props.Key)
 
-	Keyboard.KeyDown:Connect(function(key)
-		setText(key.Name)
-	end)
+	React.useEffect(function()
+		Keyboard.KeyDown:Connect(function(key)
+			setText(key.Name)
+		end)
 
-	Keyboard.KeyUp:Connect(function(key)
-		setText("")
-	end)
+		Keyboard.KeyUp:Connect(function(_key)
+			setText(Keyboard:GetKeysDown()[1] or "")
+		end)
+	end, {})
 
 	return React.createElement("TextLabel", {
 		Size = UDim2.new(0, 100, 0, 100),
@@ -38,7 +36,7 @@ local function Component(props)
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = Color3.fromRGB(100, 164, 211),
 		Text = text,
-	}, { Corner() })
+	}, { Corner(25) })
 end
 
 local root = ReactRoblox.createRoot(handle)

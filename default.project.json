@@ -28,6 +28,12 @@
       "StarterPlayerScripts": { 
         "Game": {
           "$className": "Folder",
+          "Components": {
+            "$className": "Folder",
+            "Corner": {
+              "$path": "src/client/game/components/Corner.luau"
+            }
+          },
           "Modules": {
             "$className": "Folder"
           },
