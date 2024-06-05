@@ -36,7 +36,8 @@ local function Component(props)
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = Color3.fromRGB(100, 164, 211),
 		Text = text,
-	}, { Corner(25) })
+		TextScaled = true,
+	}, { Corner(16) })
 end
 
 local root = ReactRoblox.createRoot(handle)
