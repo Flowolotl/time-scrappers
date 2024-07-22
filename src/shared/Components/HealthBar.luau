@@ -7,6 +7,23 @@ local useShake = require(ReplicatedStorage.Shared.Hooks.useShake)
 local ce = React.createElement
 
 function HealthBar()
+	local health, setHealth = React.useState(100)
+	--- move to a module script to be used by this script and Health.luau
+	React.useEffect(function()
+		local healthConnection = nil
+		local conn1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(char: Model)
+			local humanoid: Humanoid = char:WaitForChild("Humanoid") :: Humanoid
+			healthConnection = humanoid.HealthChanged:Connect(function(v: number)
+				setHealth(v)
+			end)
+		end)
+
+		return function()
+			healthConnection:Disconnect()
+			conn1:Disconnect()
+		end
+	end, {})
+	---
 	local shake = useShake()
 	local lastPos, setLastPos = React.useState(UDim2.fromScale(0, 0))
 	return ce("CanvasGroup", {
@@ -31,9 +48,15 @@ function HealthBar()
 		RedGradient = ce("UIGradient", {
 			Color = ColorSequence.new({
 				ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-				ColorSequenceKeypoint.new(0.001, Color3.fromRGB(255, 255, 255)), -- TODO: change time relative to health
+				ColorSequenceKeypoint.new(
+					math.clamp(0.5 - 0.5 * health / 100, 0.001, 0.5),
+					Color3.fromRGB(255, 255, 255)
+				),
 				ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
-				ColorSequenceKeypoint.new(0.999, Color3.fromRGB(255, 255, 255)), -- TODO: change time relative to health
+				ColorSequenceKeypoint.new(
+					math.clamp(1 - (0.5 - 0.5 * health / 100), 0.5, 0.999),
+					Color3.fromRGB(255, 255, 255)
+				),
 				ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0)),
 			}),
 		}),
