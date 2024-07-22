@@ -1,3 +1,11 @@
+local function len(t)
+	local length = 0
+	for _, _ in pairs(t) do
+		length = length + 1
+	end
+	return length
+end
+
 local function joinLists<T>(...: { T }?): { T }
 	local final = nil
 	local changed = false
@@ -26,4 +34,34 @@ local function joinLists<T>(...: { T }?): { T }
 	return final or {}
 end
 
-return joinLists
+local function join(...: { { [any]: any }? }?): { [any]: any }?
+	local final = nil
+	local changed = false
+
+	for _, t in { ... } do
+		assert(t ~= nil, "Luau")
+
+		if len(t) == 0 then
+			continue
+		end
+
+		if final == nil then
+			final = t
+		else
+			assert(final ~= nil, "Luau")
+
+			if not changed then
+				final = table.clone(final)
+				changed = true
+			end
+
+			for k, v in pairs(t) do
+				final[k] = v
+			end
+		end
+	end
+
+	return final or {}
+end
+
+return join
