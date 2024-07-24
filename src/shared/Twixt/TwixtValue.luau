@@ -67,7 +67,6 @@ function TwixtValue:_update(props)
 				local elapsed = anim.elapsedTime[i]
 				local from = anim.fromValues[i]
 				local to = anim.toValues[i]
-				local time = props.time
 				-- print(props.time, elapsed, time)
 				-- formula
 				-- completion: math.clamp(elapsed / props.time, 0, 1)

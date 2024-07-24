@@ -1,12 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local StarterPlayer = game:GetService("StarterPlayer")
-local TweenService = game:GetService("TweenService")
 local Health = require(ReplicatedStorage.Shared.Components.Health)
 local React = require(ReplicatedStorage.Packages.react)
 local Twixt = require(ReplicatedStorage.Shared.Twixt)
 local UiShake = require(StarterPlayer.StarterPlayerScripts.Game.UiShake)
-local useShake = require(ReplicatedStorage.Shared.Hooks.useShake)
 
 local ce = React.createElement
 

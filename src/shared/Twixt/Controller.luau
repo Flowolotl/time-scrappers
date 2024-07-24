@@ -25,7 +25,6 @@ Controller.__index = Controller
 local function createTV(props, key: string)
 	local binding, setBinding = React.createBinding(nil :: any)
 	local tv = TwixtValue.new(props, key)
-	print(tv)
 	tv.key = key
 	tv.onchange = function(new)
 		setBinding(new)

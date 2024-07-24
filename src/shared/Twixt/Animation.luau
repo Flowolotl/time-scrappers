@@ -32,7 +32,7 @@ export type Animation = typeof(setmetatable(
 local Animation = {} :: AnimationImpl
 Animation.__index = Animation
 
-function Animation.new(props, key): Animation
+function Animation.new(props, _key): Animation
 	local self = setmetatable({}, Animation)
 	local to = props.to
 	local from = props.from
@@ -61,7 +61,7 @@ function Animation:getValue()
 end
 
 function Animation:stop()
-	for i, v in ipairs(self.values) do
+	for _i, _v in ipairs(self.values) do
 		self.elapsedTime = table.create(#self.values, 0)
 	end
 end
