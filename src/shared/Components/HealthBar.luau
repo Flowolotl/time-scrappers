@@ -25,7 +25,6 @@ function HealthBar()
 	end, {})
 	---
 	local shake = useShake()
-	local lastPos, setLastPos = React.useState(UDim2.fromScale(0, 0))
 	return ce("CanvasGroup", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = Color3.fromHSV(199 / 360, 80 / 255, 70 / 255),

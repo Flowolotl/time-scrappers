@@ -1,19 +1,27 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.react)
+local Twixt = require(ReplicatedStorage.Shared.Twixt)
 
 local Player = Players.LocalPlayer
 local ce = React.createElement
 
 function Health()
-	local health, setHealth = React.useState(100)
+	local styles, twixt = Twixt.useTwixt(function()
+		return {
+			size = UDim2.fromScale(1, 1),
+		}
+	end)
 
 	React.useEffect(function()
 		local healthConnection = nil
 		local conn1 = Player.CharacterAdded:Connect(function(char: Model)
 			local humanoid: Humanoid = char:WaitForChild("Humanoid") :: Humanoid
 			healthConnection = humanoid.HealthChanged:Connect(function(v: number)
-				setHealth(v)
+				print("starting")
+				twixt:start({
+					size = UDim2.fromScale(v / 100, 1),
+				}, 0.1)
 			end)
 		end)
 
@@ -26,8 +34,8 @@ function Health()
 	return ce("Frame", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = Color3.fromHSV(199 / 360, 80 / 255, 191 / 255),
-		Position = UDim2.new(0.5, 0, 0.5, 0),
-		Size = UDim2.new(health / 100, 0, 1, 0),
+		Position = UDim2.fromScale(0.5, 0.5),
+		Size = styles.size,
 	}, {
 		Corner = ce("UICorner", {
 			CornerRadius = UDim.new(0.05, 0),
