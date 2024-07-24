@@ -4,9 +4,10 @@ local TwixtValue = require(ReplicatedStorage.Shared.Twixt.TwixtValue)
 
 export type ControllerImpl = {
 	__index: ControllerImpl,
-	new: (props: {}) -> ({}, Controller),
+	new: (props: {}) -> ({ string: any }, Controller),
 	start: (self: Controller, styles: { [string]: any }, time: number) -> (),
 	_disconnect: (self: Controller) -> (),
+	stop: (self: Controller) -> (),
 	_update: (self: Controller, styles: { [string]: any }) -> (),
 }
 
@@ -22,8 +23,9 @@ local Controller = {} :: ControllerImpl
 Controller.__index = Controller
 
 local function createTV(props, key: string)
+	local binding, setBinding = React.createBinding(nil :: any)
 	local tv = TwixtValue.new(props, key)
-	local binding, setBinding = React.useBinding(nil :: any)
+	print(tv)
 	tv.key = key
 	tv.onchange = function(new)
 		setBinding(new)
@@ -33,9 +35,6 @@ end
 
 local function prepareKey(ctrl, props, key)
 	local tv = ctrl.tvs[key]
-	if props.from == nil then
-		props.from = props.to
-	end
 	if not tv then
 		ctrl.tvs[key], ctrl.bindings[key] = createTV(props, key)
 		tv = ctrl.tvs[key]
@@ -43,10 +42,9 @@ local function prepareKey(ctrl, props, key)
 	tv:prepare(props)
 end
 
-function Controller.new(props: {}): ({}, Controller)
+function Controller.new(props: {}): ({ [string]: any }, Controller)
 	local self = setmetatable({}, Controller)
 
-	print("creating controller")
 	self.bindings = {}
 	self.tvs = {}
 
@@ -57,19 +55,23 @@ end
 
 function Controller:start(props, time)
 	for key, value in pairs(props) do
-		if not self.bindings[key] then
-			prepareKey(self, { from = nil :: any, to = value, time = time }, key)
-			-- print("no skip")
-		else
-			-- print("skipping")
+		local foo = nil
+		if self.bindings[key] == nil then
+			foo = value
 		end
 		local tvprops = {
-			from = self.bindings[key]:getValue(),
+			from = foo or self.bindings[key]:getValue(),
 			to = value,
 			time = time,
 		}
 		prepareKey(self, tvprops, key)
 		self.tvs[key]:start(tvprops)
+	end
+end
+
+function Controller:stop()
+	for _, tv in pairs(self.tvs) do
+		tv:stop()
 	end
 end
 

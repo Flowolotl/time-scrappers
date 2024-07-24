@@ -21,7 +21,9 @@ export type Animation = typeof(setmetatable(
 		values: any,
 		fromValues: any,
 		toValues: any,
+		lastPosition: any,
 		type: string,
+		done: { boolean },
 		elapsedTime: { number },
 	},
 	{} :: AnimationImpl
@@ -38,14 +40,20 @@ function Animation.new(props, key): Animation
 
 	self.values = helpers.getValuesFromType(from or to) -- current/intermediate values
 	self.fromValues = helpers.getValuesFromType(from or to) -- start values
-	self.toValues = helpers.getValuesFromType(to or from) -- target values
+	self.toValues = helpers.getValuesFromType(to) -- target values
+	self.lastPosition = helpers.getValuesFromType(from or to)
 	self.type = typeof(from or to)
+	self.done = table.create(length, false)
 	self.elapsedTime = table.create(length, 0)
 	return self
 end
 
 function Animation:setValue(index: number, value)
+	if self.values[index] == value then
+		return false
+	end
 	self.values[index] = value
+	return true
 end
 
 function Animation:getValue()

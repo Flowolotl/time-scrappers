@@ -48,41 +48,66 @@ function TwixtValue:start(props)
 end
 
 function TwixtValue:_update(props)
-	--
+	self.animation.elapsedTime = table.create(#self.animation.values, 0)
+	self.animation.done = table.create(#self.animation.values, false)
+	self.animation.toValues = helpers.getValuesFromType(props.to)
+	self.animation.fromValues = table.clone(self.animation.lastPosition)
 	if not self._connection then
 		self._connection = RunService.RenderStepped:Connect(function(dt)
-			--
+			local idle = true
+			local changed = false
 
 			local anim = self.animation
 
 			for i, _ in ipairs(anim.values) do
+				if anim.done[i] then
+					continue
+				end
 				anim.elapsedTime[i] += dt
 				local elapsed = anim.elapsedTime[i]
 				local from = anim.fromValues[i]
 				local to = anim.toValues[i]
 				local time = props.time
+				-- print(props.time, elapsed, time)
 				-- formula
 				-- completion: math.clamp(elapsed / props.time, 0, 1)
 				-- eased: easing(completion)
 				-- difference: to - from
 				-- displacement: difference * eased
 				-- new: from + displacement
-
-				local completion = math.clamp(elapsed / time, 0, 1)
-				local eased = Easings.Quart.Out(completion)
+				local completion = math.clamp(elapsed / props.time, 0, 1)
+				local eased = Easings.Cubic.Out(completion)
 				local difference = to - from
 				local displacement = difference * eased
 				local new = from + displacement
 
-				anim.values[i] = new
+				if completion == 1 then
+					anim.done[i] = true
+				else
+					idle = false
+				end
+
+				if anim:setValue(i, new) then
+					changed = true
+				end
 			end
 
-			self.onchange(anim:getValue())
+			if idle then
+				self.onchange(anim:getValue())
+				self:_disconnect()
+				self.animation:stop()
+			elseif changed then
+				-- print(anim:getValue())
+				self.onchange(anim:getValue())
+			end
 		end)
 	end
 end
 
-function TwixtValue:prepare(props) end
+function TwixtValue:prepare(props)
+	local values = helpers.getValuesFromType(props.from or props.to)
+	self.animation.lastPosition = table.clone(values)
+end
 
 function TwixtValue:stop()
 	self.animation:stop()

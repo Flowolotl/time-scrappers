@@ -1,12 +1,31 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local StarterPlayer = game:GetService("StarterPlayer")
 local TweenService = game:GetService("TweenService")
 local Health = require(ReplicatedStorage.Shared.Components.Health)
 local React = require(ReplicatedStorage.Packages.react)
+local Twixt = require(ReplicatedStorage.Shared.Twixt)
+local UiShake = require(StarterPlayer.StarterPlayerScripts.Game.UiShake)
 local useShake = require(ReplicatedStorage.Shared.Hooks.useShake)
 
 local ce = React.createElement
 
 function HealthBar()
+	local stylings, twixt = Twixt.useTwixt(function()
+		return {
+			position = UDim2.fromScale(0.145, 0.912),
+		}
+	end)
+	React.useEffect(function()
+		local conn = RunService.RenderStepped:Connect(function()
+			twixt:start({ position = UDim2.fromScale(0.145, 0.912) + UiShake.MouseDeltaOffset(0.025, 0.05) }, 0.1)
+		end)
+
+		return function()
+			conn:Disconnect()
+		end
+	end, {})
+	--
 	local health, setHealth = React.useState(100)
 	--- move to a module script to be used by this script and Health.luau
 	React.useEffect(function()
@@ -24,14 +43,10 @@ function HealthBar()
 		end
 	end, {})
 	---
-	local shake = useShake()
 	return ce("CanvasGroup", {
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundColor3 = Color3.fromHSV(199 / 360, 80 / 255, 70 / 255),
-		Position = shake:map(function(v: UDim2)
-			local destination = v + UDim2.new(0.145, 0, 0.912, 0)
-			return destination
-		end),
+		Position = stylings.position,
 		Size = UDim2.new(0.241, 0, 0.071, 0),
 	}, {
 		Health = ce(Health, {}),

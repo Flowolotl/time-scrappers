@@ -13,15 +13,17 @@ function Health()
 		}
 	end)
 
+	local lastHealth = 100
+
 	React.useEffect(function()
 		local healthConnection = nil
 		local conn1 = Player.CharacterAdded:Connect(function(char: Model)
 			local humanoid: Humanoid = char:WaitForChild("Humanoid") :: Humanoid
 			healthConnection = humanoid.HealthChanged:Connect(function(v: number)
-				print("starting")
 				twixt:start({
 					size = UDim2.fromScale(v / 100, 1),
-				}, 0.1)
+				}, 0.5 - math.abs(lastHealth - v) / 100 / 2)
+				lastHealth = v
 			end)
 		end)
 
