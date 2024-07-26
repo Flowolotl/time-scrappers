@@ -21,6 +21,7 @@ function StandaloneModules()
 	require(Game.UiShake)
 	require(Game.CoreUi)
 	require(Game.FirstPerson)
+	require(Game.Tool)
 end
 
 StandaloneModules()
