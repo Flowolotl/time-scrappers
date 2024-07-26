@@ -24,5 +24,5 @@ function StandaloneModules()
 	require(Game.Tool)
 end
 
+root:render(ce(HealthBar, {}, {})) -- render before modules. modules take too long so react misses the character added event
 StandaloneModules()
-root:render(ce(HealthBar, {}, {}))

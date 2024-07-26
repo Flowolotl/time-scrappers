@@ -20,6 +20,8 @@ function Tool.EquipTool(tool: Tool)
 			equippedTool.Parent = LocalPlayer.Backpack:FindFirstChild(equippedTool:GetAttribute("Slot"))
 		end
 		humanoid:EquipTool(tool)
+		Tool.ToolChanged:Fire(tool, toolChangedPrev)
+		toolChangedPrev = tool
 	end
 end
 
@@ -66,22 +68,29 @@ Keyboard.KeyDown:Connect(function(key)
 	end
 end)
 
-Character.ChildAdded:Connect(function(child)
-	if child:IsA("Tool") then
-		Tool.ToolChanged:Fire(child, toolChangedPrev)
-		toolChangedPrev = child
-	end
+Tool.ToolChanged:Connect(function(tool, prev)
+	print(`Switched from {prev} to {tool}`)
 end)
 
-Character.ChildRemoved:Connect(function(child)
-	if child:IsA("Tool") then
-		Tool.ToolChanged:Fire(nil :: any, toolChangedPrev)
-		toolChangedPrev = nil
-	end
-end)
+--
+--
+-- old
+-- Character.ChildAdded:Connect(function(child)
+-- 	if child:IsA("Tool") then
+-- 		Tool.ToolChanged:Fire(child, toolChangedPrev)
+-- 		toolChangedPrev = child
+-- 	end
+-- end)
 
-Tool.ToolChanged:Connect(function(child, prev)
-	print(`Switched from {prev} to {child}`)
-end)
+-- Character.ChildRemoved:Connect(function(child)
+-- 	if child:IsA("Tool") then
+-- 		Tool.ToolChanged:Fire(nil :: any, toolChangedPrev)
+-- 		toolChangedPrev = nil
+-- 	end
+-- end)
+
+-- Tool.ToolChanged:Connect(function(child, prev)
+-- 	print(`Switched from {prev} to {child}`)
+-- end)
 
 return Tool
