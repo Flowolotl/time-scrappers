@@ -21,8 +21,13 @@ function StandaloneModules()
 	require(Game.UiShake)
 	require(Game.CoreUi)
 	require(Game.FirstPerson)
-	require(Game.Tool)
+	require(Game.BackpackController)
+	require(Game.ViewModel)
 end
 
-StandaloneModules()
+task.spawn(StandaloneModules)
+
 root:render(ce(HealthBar, {}, {}))
+Players.LocalPlayer.CharacterAdded:Connect(function(char)
+	root:render(ce(HealthBar, {}, {}))
+end)
